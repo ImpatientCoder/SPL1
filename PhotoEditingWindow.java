@@ -1,24 +1,24 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
 public class PhotoEditingWindow implements ActionListener
 {
 	
-	
+	  JFrame frame = new JFrame("Photo Editor");  
+		
 	  JMenu FileMenu, Modify, Enhance, Filter, Export, Help;
 	  
 	  JMenuItem open, save, close;
@@ -28,7 +28,12 @@ public class PhotoEditingWindow implements ActionListener
 
 	  
 	  JFileChooser javaFileChooser = new JFileChooser("Enter an Image");
-	
+	  
+	  JLabel imageLabel = new JLabel();
+	  JPanel imagePanel = new JPanel();
+	  
+	  public BufferedImage bufferedImage;
+	  public Image OriginalImage;
 	  
 	  public PhotoEditingWindow()
 	  {
@@ -40,7 +45,6 @@ public class PhotoEditingWindow implements ActionListener
 	  public void createMenubar()
       { 
 		  
-    	 JFrame frame = new JFrame("Photo Editor");  
      	 JMenuBar MB  = new JMenuBar();
      	 
      	 
@@ -133,16 +137,23 @@ public class PhotoEditingWindow implements ActionListener
          
  
    //Choosing the specific file from file chooser
+       
          
+        imagePanel.add(imageLabel, BorderLayout.CENTER);
+ 	    imagePanel.setLayout(new FlowLayout());
+ 	  
          
 	    FileNameExtensionFilter openFilter;
 	    openFilter = new FileNameExtensionFilter("Images", "jpg", "bmp", "jpeg");
-	    javaFileChooser.setFileFilter(openFilter);       
+	    javaFileChooser.setFileFilter(openFilter);
+	    
+	
+	    
 	    
     //Shape of the frame
          
-         
-		 frame.setJMenuBar(MB);  
+         frame.add(imagePanel);
+		 frame.setJMenuBar(MB);
          frame.setSize(600,500);  
          frame.setLayout(null);  
          frame.setVisible(true);
@@ -163,10 +174,12 @@ public class PhotoEditingWindow implements ActionListener
 			
 			if(operation.getText().equals("Open"))
 			{
-				try {
-					edit.openFile();
-				 } catch (IOException e1) {
-					// TODO Auto-generated catch block
+				try
+				{
+					openFile();
+				}
+				catch (IOException e1)
+				{
 					e1.printStackTrace();
 				}
 			}
@@ -180,23 +193,78 @@ public class PhotoEditingWindow implements ActionListener
 			{
 				System.exit(0);
 			} 
-
-
 			
+			else if (operation.getText().equals("Negative"))
+			{
+				edit.makeNegative();
+			}
+
 									
+		}
+		
+		public void openFile() throws IOException
+		{
+			
+				int returnValue = javaFileChooser.showOpenDialog(javaFileChooser);
+				
+				if (returnValue == JFileChooser.APPROVE_OPTION)
+				{
+					
+					try{
+						
+							String filePath = javaFileChooser.getSelectedFile().getAbsolutePath();
+						
+							bufferedImage 	= ImageIO.read(new File(filePath)); //Make filePath a File
+							OriginalImage 	= ImageIO.read(new File(filePath));
+						
+							System.out.println("Reading Finished");	
+						
+							DisplayImage();	
+						
+					    }
+						catch (IOException e)
+						{
+							e.printStackTrace();
+						}
+					
+				}
+				
+				else
+				{
+					JOptionPane.showMessageDialog(null, "please select image");
+				}
+				
+		}
+		
+		public void DisplayImage() {
+			
+	      JLabel label = new JLabel(new ImageIcon(bufferedImage));
+	      frame.add(label);
+	      frame.setVisible(true);
+//			imageLabel.setIcon(new ImageIcon(image));   //How to display???
+	      System.out.println("Displaying finished");
+
 		}
 		
 
 		
-//      Set Image() & Display Image	
-
-//		How to create submenu
 		
-//      i4 = new JMenuItem("Item 4");  
-//      i5 = new JMenuItem("Item 5");       
-//      submenu  = new JMenu("New");
-//      submenu.add(i4); 
-//      submenu.add(i5);       
-//      edit.add(submenu); 
+
 		
 }
+
+//Set Image() & Display Image	
+//label = new JLabel();
+//imgpanel.add(label, BorderLayout.CENTER);
+//imgpanel.setLayout(new FlowLayout());
+//add(imgpanel);
+
+
+//How to create submenu
+
+//i4 = new JMenuItem("Item 4");  
+//i5 = new JMenuItem("Item 5");       
+//submenu  = new JMenu("New");
+//submenu.add(i4); 
+//submenu.add(i5);       
+//edit.add(submenu); 
