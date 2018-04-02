@@ -1,0 +1,27 @@
+https://www.gimp.org/tutorials/Simple_Animations/
+
+
+https://www.computerhope.com/issues/ch001115.htm
+
+
+
+Important things to know
+
+
+Before following the steps involved in creating an animated image, it's important to keep the below things in mind.
+
+
+1.    The completed animated image must always be a .GIF image. .JPG or .JPEG images do not support animation.
+
+
+2.    An animated image is comprised of multiple images. Each of these images must be the same size, in terms of width and height.
+
+
+3.    The image should not exceed 256 colors.
+
+
+4.    Internet browsers can be set to not display the animation for an animated image. 
+
+ 
+
+5.    If disabled, the visitor would only see the starting frame and not all the frames that make up the animated image.
