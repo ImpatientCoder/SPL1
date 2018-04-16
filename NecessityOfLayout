@@ -1,0 +1,55 @@
+Tasks done Without a Layout Manager (Absolute Positioning)
+
+Layout managers basically do two things:
+Calculate the minimum/preferred/maximum sizes for a container.
+Lay out the container's children
+
+
+It is possible to lay out the controls by hand, however, it becomes very difficult because of the following two reasons.
+
+    #It is very tedious to handle a large number of controls within the container.
+
+    #Usually, the width and height information of a component is not given when we need to arrange them.
+
+
+
+Java LayoutManagers:
+
+The LayoutManagers are used to arrange components in a particular manner. LayoutManager is an interface that is implemented by all the classes of layout managers. There are following classes that represents the layout managers:
+
+ava.awt.BorderLayout
+java.awt.FlowLayout
+java.awt.GridLayout
+java.awt.CardLayout
+java.awt.GridBagLayout
+javax.swing.BoxLayout
+javax.swing.GroupLayout
+javax.swing.ScrollPaneLayout
+javax.swing.SpringLayout etc.
+
+
+Necessity of Layout in Java:
+
+1.  Layout refers to the arrangement of components within the container. In another way, it could be said that layout is placing the components at a particular position within the container. 
+
+2. The task of laying out the controls is done automatically by the Layout Manager.
+
+3. The layout manager automatically positions all the components within the container. Even if you do not use the layout manager, the components are still positioned by the default layout manager.
+
+4. When the size of the applet or the application window changes, the size, shape, and arrangement of the components also changes in response, i.e. the layout managers adapt to the dimensions of the appletviewer or the application window. 
+
+5. For example, The BorderLayout is used to arrange the components in five regions: north, south, east, west and center.Each region may contain one component only. It is the default layout of frame or window.
+
+
+
+
+
+
+Source:  1. https://www.javatpoint.com/java-layout-manager
+       2.https://www.tutorialspoint.com/swing/swing_layouts.htm
+       3.https://docs.oracle.com/javase/tutorial/uiswing/layout/none.html
+    
+
+    
+
+
