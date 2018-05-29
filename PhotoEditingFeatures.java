@@ -490,11 +490,68 @@ public class PhotoEditingFeatures extends JPanel implements ActionListener
 		   }
 		   
 		  	  
-	 }	
-
-
+	 }
 	
 	
+	
+	
+	
+	
+	
+	public void makeGrayScaleImage(BufferedImage image) throws IOException
+	{
 		
+		if(image == null)
+		{
+			   System.out.println("Please, open the File Menu \n And Select an image to edit...\n\n");
+			   return;
+		}
+		
+		
+	    int column = image.getWidth();
+	    int	row = image.getHeight();
+	    
+	    
+		for( int i = 0; i < column; i++ ) 
+		{
+			
+			    for( int j = 0; j < row; j++ )
+			    {
+			    	
+			    	
+			        int pixel  = image.getRGB(i, j);
+			        
+			        
+			        
+			        int alpha = (pixel >>24) & 0xff;
+			        int red	  = (pixel >>16) & 0xff;
+			        int green = (pixel >>8)  & 0xff;
+			        int blue  =  pixel & 0xff;
+			        
+			        
+			        int average = (red + green + blue)/3;
+			        
+			        
+			        red = average;
+			        green = average;
+			        blue = average;
+			        
+			        
+			        
+			        pixel = (alpha<<24)| (red<<16)| (green<<8)| blue;			        
+			        image.setRGB(i, j, pixel);
+			        
+			    }
+			    
+		 }
+		
+		
+				
+	}
+
+	
+	
+
+				
 		
 }
