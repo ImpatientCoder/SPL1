@@ -1,52 +1,66 @@
+package spl1;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-
-import java.awt.*;
-import java.awt.event.*;
-
 import javax.imageio.ImageIO;
-import javax.swing.*;
-
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class PhotoEditingWindow implements ActionListener
 {
+
 	
-	  JFrame frame = new JFrame("Photo Editor");  
-		
+	  JFrame frame = new JFrame("Photo Editor"); 
+	    
 	  JMenu FileMenu, Modify, Enhance, Filter, Export, Help;
 	  
 	  JMenuItem open, save, close;
 	  JMenuItem rotation, mirror, drawing, negative;
 	  JMenuItem contrast, curves, sharpness,  edges;
-	  JMenuItem blackwhite, punch, vintage, thickness;
-
+	  JMenuItem blackwhite, grayScale, vintage, thickness, red, green, blue, animation; 
 	  
-	  JFileChooser javaFileChooser = new JFileChooser("Enter an Image");
-	  
-	  JLabel imageLabel = new JLabel();
+	  JFileChooser javaFileChooser = new JFileChooser("Enter an Image");  
+	
+	  JLabel welcomeLabel = new JLabel("WELCOME");
+	  JLabel imageLabel = new JLabel(new ImageIcon("C:\\Users\\Md. Alamgir Kabir\\Documents\\Sample3.jpg"));
 	  JPanel imagePanel = new JPanel();
 	  
-	  public BufferedImage bufferedImage;
-	  public Image OriginalImage;
+	  public Image originalImage = null;
+	  public BufferedImage bufferedImage ;
 	  
-	  public PhotoEditingWindow()
+	  
+	  
+		
+	  public PhotoEditingWindow() throws IOException
 	  {
 		  createMenubar();
+		  
+		  bufferedImage=ImageIO.read(new File("C:\\Users\\Md. Alamgir Kabir\\Documents\\Sample3.jpg"));
 	  }	
 
+	
+	  
 	  
 	  
 	  public void createMenubar()
       { 
 		  
-     	 JMenuBar MB  = new JMenuBar();
-     	 
+     	 JMenuBar menubar  = new JMenuBar();
      	 
      	 FileMenu   = new JMenu("File");  
      	 Modify		= new JMenu("Modification");
@@ -54,14 +68,13 @@ public class PhotoEditingWindow implements ActionListener
      	 Filter		= new JMenu("Filter");
      	 Export		= new JMenu("Export");
      	 Help       = new JMenu("Help");
-
      	 
-     //Create menu item to File
-     	 
+         //Create menu item to File
      	 
          open = new JMenuItem("Open");
          save = new JMenuItem("Save");  
          close = new JMenuItem("Close"); 
+
          
          FileMenu.add(open); 
          FileMenu.add(save); 
@@ -71,26 +84,24 @@ public class PhotoEditingWindow implements ActionListener
          save.addActionListener(this);
          close.addActionListener(this);
          
-         
-    //Create menu item to Modification
+       //Create menu item to Modification
          
          rotation = new JMenuItem("Rotate");
          mirror   = new JMenuItem("Mirror");
          drawing  = new JMenuItem("Draw");
          negative = new JMenuItem("Negative");
          
+         Modify.add(negative);
          Modify.add(rotation);
          Modify.add(mirror); 
          Modify.add(drawing);
-         Modify.add(negative);
          
          rotation.addActionListener(this);         
          mirror.addActionListener(this);
          drawing.addActionListener(this);
          negative.addActionListener(this);
          
-         
-   //Create menu item to Enhancement  
+       //Create menu item to Enhancement  
          
          contrast  = new JMenuItem("Contrast");
          curves	   = new JMenuItem("Curves");	
@@ -107,164 +118,244 @@ public class PhotoEditingWindow implements ActionListener
          Enhance.add(sharpness);
          Enhance.add(edges);
          
-   //Create menu item to Filter & Export  
+       //Create menu item to Filter & Export  
          
          blackwhite = new JMenuItem("Black/White");
-         punch      = new JMenuItem("Punch");
+         grayScale      = new JMenuItem("GrayScale");
          vintage 	= new JMenuItem("Vintage");
          thickness  = new JMenuItem("Thickness");
+         animation  = new JMenuItem("See Animation");
+         red = new JMenuItem("Red");
+         green = new JMenuItem("Green");
+         blue = new JMenuItem("Blue");
          
          blackwhite.addActionListener(this);
-         punch.addActionListener(this);
+         grayScale.addActionListener(this);
          vintage.addActionListener(this);
          thickness.addActionListener(this);
+         red.addActionListener(this);
+         green.addActionListener(this);
+         blue.addActionListener(this);
+         animation.addActionListener(this);
          
          Filter.add(blackwhite);
-         Filter.add(punch);
+         Filter.add(grayScale);
+         Filter.add(animation);
          Filter.add(vintage);         
+
+         Export.add(red);
+         Export.add(green);
+         Export.add(blue);
          Export.add(thickness);
          
+       //Adding Menus to Menubar
          
-   //Adding Menus to Menubar
+         menubar.add(FileMenu);
+         menubar.add(Modify);
+         menubar.add(Filter);
+         menubar.add(Export);
+         menubar.add(Enhance);
+         menubar.add(Help);
+        
+         frame.setJMenuBar(menubar);  
+
+// 		Shape of the frame
          
+// Choosing the specific file from file chooser
          
-         MB.add(FileMenu);
-         MB.add(Modify);
-         MB.add(Enhance);
-         MB.add(Filter);
-         MB.add(Export);
-         MB.add(Help);
+         FileNameExtensionFilter openFilter;
+         openFilter = new FileNameExtensionFilter("EditingImageFile", "JPG", "jpg", "png", "jpeg","IMG");	
+         javaFileChooser.setFileFilter(openFilter);
          
- 
-   //Choosing the specific file from file chooser
-       
-         
-        imagePanel.add(imageLabel, BorderLayout.CENTER);
- 	    imagePanel.setLayout(new FlowLayout());
- 	  
-         
-	    FileNameExtensionFilter openFilter;
-	    openFilter = new FileNameExtensionFilter("Images", "jpg", "bmp", "jpeg");
-	    javaFileChooser.setFileFilter(openFilter);
-	    
-	
-	    
-	    
-    //Shape of the frame
-         
-         frame.add(imagePanel);
-		 frame.setJMenuBar(MB);
-         frame.setSize(600,500);  
-         frame.setLayout(null);  
+		 imageLabel.setSize(300,300);
+         frame.add(imageLabel);
+         frame.setSize(700, 700);  
          frame.setVisible(true);
          
-          
+         
       }
+	  
+	  
 
-	  
-	  
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{	
 			
 			
-			EditingFeatures edit = new EditingFeatures();			
-			
+			PhotoEditingFeatures edit = new PhotoEditingFeatures(frame);
 			JMenuItem operation = (JMenuItem) (e.getSource());
 			
-			if(operation.getText().equals("Open"))
+			
+			if (operation.getText().equals("Open")) 
 			{
-				try
-				{
-					openFile();
-				}
-				catch (IOException e1)
-				{
-					e1.printStackTrace();
-				}
+				openFile();
 			}
 			
-			else if (operation.getText().equals("Save"))
-			{
-				//a method to save
-			} 
 			
-			else if (operation.getText().equals("Close"))
+			
+			else if (operation.getText().equals("Rotate"))
 			{
-				System.exit(0);
-			} 
+				edit.rotateImage(bufferedImage);
+				displayImage(bufferedImage);
+			}
+			
+			
+			
+			else if (operation.getText().equals("Edges"))
+			{
+				edit.makeEdgeImage(bufferedImage);
+				displayImage(bufferedImage);
+			}
+			
+			
+			else if (operation.getText().equals("Mirror"))
+			{
+				edit.makeMirror(bufferedImage);
+				displayImage(bufferedImage);
+			}
+			
+			
+			else if (operation.getText().equals("Draw"))
+			{
+				// a method to Draw
+			}
+			
 			
 			else if (operation.getText().equals("Negative"))
 			{
-				edit.makeNegative();
+				
+				edit.makeNegative(bufferedImage);
+				displayImage(bufferedImage);
+				//displayOriginalImage();	//???????				
+			}
+			
+			
+			else if (operation.getText().equals("Black/White")) 
+			{
+				try
+				{
+					edit.makeBlackWhite(bufferedImage);
+				}catch (IOException e1)
+				{
+					e1.printStackTrace();
+				}
+				displayImage(bufferedImage);
+			}
+			
+
+			
+			else if (operation.getText().equals("GrayScale")) 
+			{
+				try
+				{
+					edit.makeGrayScaleImage(bufferedImage);
+				}catch (IOException e1)
+				{
+					e1.printStackTrace();
+				}
+				displayImage(bufferedImage);
+			}
+			
+			
+			
+			else if (operation.getText().equals("See Animation")) 
+			{
+				edit.makeAnimation(bufferedImage);
+				frame.add(edit);
+				frame.setVisible(true);
+			}
+			
+			
+			else if (operation.getText().equals("Save")) 
+			{
+			// a method to save
+			}
+			
+			else if (operation.getText().equals("Red")) 
+			{
+				edit.makeRedImage(bufferedImage);
+				displayImage(bufferedImage);
 			}
 
-									
+			
+			else if (operation.getText().equals("Blue")) 
+			{
+				edit.makeBlueImage(bufferedImage);
+				displayImage(bufferedImage);
+			}
+			
+			
+			else if (operation.getText().equals("Green")) 
+			{
+				edit.makeGreenImage(bufferedImage);
+				displayImage(bufferedImage);
+			}
+
+			
+			else if (operation.getText().equals("Close")) 
+			{
+				System.exit(0);
+			}
+
+			
 		}
 		
-		public void openFile() throws IOException
+
+
+		
+		
+		
+		public void openFile()
 		{
 			
-				int returnValue = javaFileChooser.showOpenDialog(javaFileChooser);
+				int returnValue = javaFileChooser.showOpenDialog(javaFileChooser); // 0;
+				
 				
 				if (returnValue == JFileChooser.APPROVE_OPTION)
-				{
+				{				
 					
-					try{
+					String fileName = javaFileChooser.getSelectedFile().getAbsolutePath();
+					
+					File imageFile = new File(fileName);					
+					try
+					{
+						originalImage = ImageIO.read(imageFile);
+						bufferedImage = ImageIO.read(imageFile);
+						displayImage(bufferedImage);
 						
-							String filePath = javaFileChooser.getSelectedFile().getAbsolutePath();
+					}catch (IOException e){
 						
-							bufferedImage 	= ImageIO.read(new File(filePath)); //Make filePath a File
-							OriginalImage 	= ImageIO.read(new File(filePath));
-						
-							System.out.println("Reading Finished");	
-						
-							DisplayImage();	
-						
-					    }
-						catch (IOException e)
-						{
-							e.printStackTrace();
-						}
+						e.printStackTrace();
+					}
+					
+					
 					
 				}
+				
+				
 				
 				else
 				{
-					JOptionPane.showMessageDialog(null, "please select image");
+					JOptionPane.showMessageDialog(null, "Please select an Image");
 				}
 				
 		}
-		
-		public void DisplayImage() {
-			
-	      JLabel label = new JLabel(new ImageIcon(bufferedImage));
-	      frame.add(label);
-	      frame.setVisible(true);
-//			imageLabel.setIcon(new ImageIcon(image));   //How to display???
-	      System.out.println("Displaying finished");
 
+		
+		
+		
+		public void displayOriginalImage()
+		{		
+			imageLabel.setIcon(new ImageIcon(originalImage));	
+		}
+
+
+
+		public void displayImage(BufferedImage bufferedImage)
+		{
+			imageLabel.setIcon(new ImageIcon(bufferedImage));
 		}
 		
-
-		
 		
 
-		
 }
-
-//Set Image() & Display Image	
-//label = new JLabel();
-//imgpanel.add(label, BorderLayout.CENTER);
-//imgpanel.setLayout(new FlowLayout());
-//add(imgpanel);
-
-
-//How to create submenu
-
-//i4 = new JMenuItem("Item 4");  
-//i5 = new JMenuItem("Item 5");       
-//submenu  = new JMenu("New");
-//submenu.add(i4); 
-//submenu.add(i5);       
-//edit.add(submenu); 
