@@ -183,7 +183,7 @@ public class PhotoEditingFeatures extends JPanel implements ActionListener
 		//image format (column*row) pixel
 		//width(refers column number) 0 1 2 3...
 		//hight(refers row number)	  (0,0),(0,1), (0,2)...up to down	
-		//0 er jonno ek column porbe, then 1 er jonno ek column..
+		//This is actually Column swapping (First column <----> Last Column) 
 
 		
 		//Create mirror using pixel array
@@ -200,7 +200,8 @@ public class PhotoEditingFeatures extends JPanel implements ActionListener
 		 
 		for( int i = 0; i < column; i++ ) 
 		{
-			    for( int j = 0; j < row; j++ ){
+			    for( int j = 0; j < row; j++ )
+			    {
 			        image.setRGB(i, j, pixels[i][j]);
 			    }
 			    
@@ -352,7 +353,7 @@ public class PhotoEditingFeatures extends JPanel implements ActionListener
 		    for( int j = 0; j < h; j++ )
 		    {
 		        pixels[i][j] = image.getRGB(i, j);
-				System.out.println(pixels[i][j]);
+			//System.out.println(pixels[i][j]);
 		    }
 		}    
 
